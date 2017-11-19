@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MPC Client</title>
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/app.css') }}">
+</head>
+
+<body>
+<div>
+  <h1> Search Client</h1>
+  <hr>
+</div>
+
+<header class="navbar">
+  <form action="/upload" method="post" enctype="multipart/form-data" >
+      <span class="btn btn-default btn-file">
+        <h3>Upload Base Image: </h3> <input type="file" name="image">
+      </span>
+
+    <div style="margin-top:40px;">
+      <span>
+        <h3> Specify Location: 
+        <select name='location'>
+            <option value="Pittsburgh">Pittsburgh</option>
+            <option value="Palo Alto">Palo Alto</option>
+            <option value="Antartica">Antartica</option>
+            <option value="ISS">ISS</option>
+        </select>
+      </span>
+    </div>
+
+    <input type="submit" value="Upload your image" class="btn btn-primary">
+
+  </form>
+</header>
+
+
+
+
+
+</body>
+</html>

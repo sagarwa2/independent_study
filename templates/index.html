@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Search Client</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Material Design Bootstrap -->
+    <link href="{{ url_for('static',filename='css/mdb.min.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static',filename='css/style.css') }}" rel="stylesheet">
+
+    <!-- Template styles -->
+    <style rel="stylesheet">
+        /* TEMPLATE STYLES */
+
+        main {
+            padding-top: 3rem;
+            padding-bottom: 2rem;
+        }
+
+        .widget-wrapper {
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 2rem;
+        }
+
+
+        .navbar {
+            background-color: #53463d;
+        }
+
+        footer.page-footer {
+            background-color: #53463d;
+            margin-top: 2rem;
+        }
+
+        .list-group-item.active {
+            background-color: #33b5e5;
+            border-color: #33b5e5
+        }
+
+        .list-group-item:not(.active) {
+            color: #222;
+        }
+
+        .list-group-item:not(.active):hover {
+            color: #666;
+        }
+        .card {
+            font-weight: 300;
+        }
+        .navbar .btn-group .dropdown-menu a:hover {
+            color: #000 !important;
+        }
+        .navbar .btn-group .dropdown-menu a:active {
+            color: #fff !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <main>
+
+        <!--Main layout-->
+        <div class="container">
+            <div class="row">
+
+                <!--Sidebar-->
+                <div class="col-lg-6">
+                  <form action="/upload" method="post" enctype="multipart/form-data" >
+                    <div class="widget-wrapper wow fadeIn" data-wow-delay="0.6s">
+                        <h4 class="font-bold">Search Images: </h4>
+                        <br>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="md-form">
+                                    <i class="fa fa-image prefix"></i>
+                                    <input type="file" name="image" style="margin-left:50px;margin-top:4px">
+                                    <label for="form1" style="margin-left:290px;margin-top:-7px">Select Base Image</label>
+                                </div>
+                                <div class="md-form">
+                                    <i class="fa fa-location-arrow prefix"></i>
+                                    <select name='location' style="margin-left:50px;margin-top:4px">
+                                        <option value="Pittsburgh">Pittsburgh</option>
+                                        <option value="Antartica">Antartica</option>
+                                        <option value="ISS">ISS</option>
+                                    </select>
+                                    <label for="form2" style="margin-left:290px;margin-top:-7px"> Select Location</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-info" style="background:skyblue">
+                    </form>
+
+                </div>
+                <!--/.Sidebar-->
+            </div>
+        </div>
+        <!--/.Main layout-->
+
+    </main>
+
+    <!-- SCRIPTS -->
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-3.1.1.min.js') }}"></script>
+
+    <!-- Bootstrap dropdown -->
+    <script type="text/javascript" src="{{ url_for('static',filename='js/popper.min.js') }}"></script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="{{ url_for('static',filename='js/mdb.min.js') }}"></script>
+
+    <script>
+        new WOW().init();
+    </script>
+
+</body>
+
+</html>
