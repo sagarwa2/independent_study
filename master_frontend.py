@@ -52,8 +52,8 @@ def get_job_id_from_instance_id(instance_id):
 	ec2 = boto3.resource('ec2')
 	ec2instance = ec2.Instance(instance_id)
 	job_id = None
-    for tags in ec2instance.tags:
-    	if tags['Key'] == "job":
-    		job_id = tags['Value']
-    		break
-    return job_id
+	for tags in ec2instance.tags:
+		if tags['Key'] == "job":
+			job_id = tags['Value']
+			break
+	return job_id
