@@ -5,7 +5,7 @@ class JOB(object):
 	
 	"""docstring for RequestWrapper"""
 	
-	bucket_url  = None
+	bucket_name  = None
 	num_workers = None
 	ami_number = None
 	instance_type = None
@@ -19,7 +19,7 @@ class JOB(object):
 	def __init__(self,job_id, bucket,ami,num_workers,instance_type):
 		self.id = job_id
 		self.mapping_dictionary = {}
-		self.bucket_url = bucket
+		self.bucket_name = bucket
 		self.ami_number = ami
 		self.num_workers = num_workers
 		self.instance_type = instance_type
@@ -28,7 +28,7 @@ class JOB(object):
 	def assign_tasks(self):
 		# keep the state of each machine working
 		s3 = boto3.resource('s3')
-		current_bucket = s3.Bucket(self.bucket_url)
+		current_bucket = s3.Bucket(self.bucket_name)
 		# request s3 to get the number of images
 		all_images = current_bucket.objects.all()
 		num_images = sum(1 for _ in all_images)
@@ -75,3 +75,18 @@ class JOB(object):
 		self.list_of_instances = instance_ids
 		self.assign_tasks()
 		# wait for the machine to run
+
+	def set_job_running(self):
+		self.status = 1
+
+	def set_job_finished(self):
+		self.status = 2
+
+	def set_job_failed(self):
+		self.status = -1
+
+	def check_job_finished(self):
+		for k,v in self.mapping_dictionary.items():
+			if v.state != 2:
+				return False
+		return True

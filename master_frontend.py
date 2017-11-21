@@ -7,8 +7,8 @@ from request_wrapper import JOB
 app = Flask(__name__)
 
 current_running_requests = {
-	"12345":(0,5)
 }
+finished_jobs = []
 
 @app.route('/')
 def submit_job_to_scheduler():
@@ -30,21 +30,42 @@ def get_job_request():
 
 	# create a request object
 	new_req_obj = JOB(job_id,s3_url,ami_number,num_workers,instance_type)
+	
+	# add to map
+	current_running_requests[job_id] = new_req_obj
+
+	# run workers
 	new_req_obj.run_num_workers()
 
-@app.route('/update_job_status',methods=['POST'])
-def update_job_status():
-	job_id = request.form['job_id']
+@app.route('/end_task',methods=['POST'])
+def end_task():
 	instance_id = request.form['instance_id']
 	# change status of job to running on first call
+	associated_job_id = get_job_id_from_instance_id(instance_id)
+	req_obj = current_running_requests[associated_job_id]
+	req_task = req_obj.mapping_dictionary[instance_id]
+	req_task.set_task_finished()
+
+	# check each job finished
+	if req_obj.check_job_finished():
+		req_obj.set_job_finished()
+		finished_jobs.append(associated_job_id)
+	return jsonify({"status":200})
 
 @app.route('/get_task',methods=['POST'])
 def get_task():
 	instance_id = request.form['instance_id']
 	associated_job_id = get_job_id_from_instance_id(instance_id)
-	#print instance_id,associated_job_id,current_running_requests
-	range_values = current_running_requests.get(associated_job_id,(0,0))
- 	return jsonify({"st_range":range_values[0],"end_range":range_values[1],"bucket":"independent-study-images"})
+	req_obj = current_running_requests[associated_job_id]
+	bucket_name = req_obj.bucket_name
+	req_task = req_obj.mapping_dictionary[instance_id]
+	
+	# set it to running
+	req_task.set_task_running()
+
+	# set job running
+	req_obj.set_job_running()
+ 	return jsonify({"st_range":req_task.st_index,"end_range":req_task.end_index,"bucket":bucket_name})
 
 def get_unique_request_id():
 	req_id = randint(0,9223372036854775806)

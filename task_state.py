@@ -11,11 +11,11 @@ class TaskState(object):
 		self.end_index = end_index
 		self.is_running = 0
 
-	def set_job_running(self):
+	def set_task_running(self):
 		self.state = 1
 
-	def set_job_finished(self):
+	def set_task_finished(self):
 		self.state = 2
 
-	def set_job_failed(self):
+	def set_task_failed(self):
 		self.state = -1
