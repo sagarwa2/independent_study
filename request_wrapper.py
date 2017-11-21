@@ -31,7 +31,7 @@ class JOB(object):
 		current_bucket = s3.Bucket(self.bucket_url)
 		# request s3 to get the number of images
 		all_images = current_bucket.objects.all()
-		num_images = len(all_images)
+		num_images = sum(1 for _ in all_images)
 		# divide among the instances
 		st_idx = 0
 		instance_idx = 0
