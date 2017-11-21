@@ -1,12 +1,14 @@
 
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for,jsonify
 import boto3
 from random import randint
 from request_wrapper import JOB
 
 app = Flask(__name__)
 
-current_running_requests = {}
+current_running_requests = {
+	"12345":(0,5)
+}
 
 @app.route('/')
 def submit_job_to_scheduler():
@@ -18,7 +20,7 @@ def get_job_request():
 	s3_url = request.form['source_bucket']
 	num_workers = request.form['num_workers']
 	ami_number = request.form['ami_number']
-	instance_type = request.form['ami_number']
+	instance_type = request.form['instance_type']
 	if not instance_type:
 		instance_type = "t2.micro"
 	
@@ -40,15 +42,18 @@ def update_job_status():
 def get_task():
 	instance_id = request.form['instance_id']
 	associated_job_id = get_job_id_from_instance_id(instance_id)
-	print instance_id,associated_job_id
+	#print instance_id,associated_job_id,current_running_requests
+	range_values = current_running_requests.get(associated_job_id,(0,0))
+ 	return jsonify({"st_range":range_values[0],"end_range":range_values[1],"bucket":"independent-study-images"})
 
 def get_unique_request_id():
 	req_id = randint(0,9223372036854775806)
 	while req_id in current_running_requests:
 		req_id = randint(0,9223372036854775806)
-	return req_id
+	return str(req_id)
 
 def get_job_id_from_instance_id(instance_id):
+	print instance_id
 	ec2 = boto3.resource('ec2')
 	ec2instance = ec2.Instance(instance_id)
 	job_id = None
