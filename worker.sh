@@ -12,3 +12,6 @@ BUCKET_NAME=$(curl -d "instance_id=$INSTANCE_ID" -X POST http://54.147.64.78:808
 python /home/ubuntu/independent_study/download_worker.py $BUCKET_NAME $ST_RANGE $END_RANGE $DOWNLOAD_DIRECTORY
 
 # FILES DOWNLOADED, USE YOUR OWN SCRIPT NOW
+
+# set task to end
+curl -d "instance_id=$INSTANCE_ID" -X POST http://54.147.64.78:8080/end_task
